@@ -1,1 +1,45 @@
-Y29uc3QgZXhwcmVzcyA9IHJlcXVpcmUoJ2V4cHJlc3MnKTsKY29uc3QgY29ycyA9IHJlcXVpcmUoJ2NvcnMnKTsKY29uc3QgcGF0aCA9IHJlcXVpcmUoJ3BhdGgnKTsKY29uc3QgWExTWCA9IHJlcXVpcmUoJ3hsc3gnKTsKCmNvbnN0IGFwcCA9IGV4cHJlc3MoKTsKY29uc3QgUE9SVCA9IHByb2Nlc3MuZW52LlBPUlQgfHwgMzAwMDsKY29uc3QgRklMRSA9IHByb2Nlc3MuZW52LlJFU1VNRV9YTFNYIHx8IHBhdGguam9pbihfX2Rpcm5hbWUsICdkYXRhJywgJ3Jlc3VtZS54bHN4Jyk7CgovLyAiVGVhbSBTaXplIiAtPiAidGVhbVNpemUiCmNvbnN0IGNhbWVsID0gKHMpID0+CiAgU3RyaW5nKHMpLnRyaW0oKS5yZXBsYWNlKC9bXmEtekEtWjAtOV0rKC4pPy9nLCAoXywgYykgPT4gKGMgPyBjLnRvVXBwZXJDYXNlKCkgOiAnJykpCiAgICAucmVwbGFjZSgvXi4vLCAoYykgPT4gYy50b0xvd2VyQ2FzZSgpKTsKCi8vIFJlLXJlYWRzIHRoZSBmaWxlIG9uIGV2ZXJ5IHJlcXVlc3QsIHNvIHNhdmVkIEV4Y2VsIGVkaXRzIHNob3cgdXAgb24gcmVmcmVzaC4KZnVuY3Rpb24gcmVhZFdvcmtib29rKCkgewogIGNvbnN0IHdiID0gWExTWC5yZWFkRmlsZShGSUxFKTsKICBjb25zdCBvdXQgPSB7fTsKICBmb3IgKGNvbnN0IG5hbWUgb2Ygd2IuU2hlZXROYW1lcykgewogICAgaWYgKG5hbWUuc3RhcnRzV2l0aCgnXycpKSBjb250aW51ZTsgLy8gcHJpdmF0ZSB0YWJzCiAgICBjb25zdCByb3dzID0gWExTWC51dGlscy5zaGVldF90b19qc29uKHdiLlNoZWV0c1tuYW1lXSwgeyBkZWZ2YWw6ICcnLCByYXc6IGZhbHNlIH0pOwogICAgb3V0W2NhbWVsKG5hbWUpXSA9IHJvd3MubWFwKChyb3cpID0+CiAgICAgIE9iamVjdC5mcm9tRW50cmllcyhPYmplY3QuZW50cmllcyhyb3cpLm1hcCgoW2ssIHZdKSA9PiBbY2FtZWwoayksIHR5cGVvZiB2ID09PSAnc3RyaW5nJyA/IHYudHJpbSgpIDogdl0pKQogICAgKTsKICB9CiAgcmV0dXJuIG91dDsKfQoKYXBwLnVzZShjb3JzKCkpOwphcHAudXNlKChyZXEsIHJlcywgbmV4dCkgPT4geyByZXMuc2V0KCdDYWNoZS1Db250cm9sJywgJ25vLXN0b3JlJyk7IG5leHQoKTsgfSk7CgphcHAuZ2V0KCcvYXBpL3Jlc3VtZScsIChyZXEsIHJlcykgPT4gewogIHRyeSB7IHJlcy5qc29uKHJlYWRXb3JrYm9vaygpKTsgfQogIGNhdGNoIChlKSB7IHJlcy5zdGF0dXMoNTAwKS5qc29uKHsgZXJyb3I6IGBDb3VsZCBub3QgcmVhZCAke0ZJTEV9OiAke2UubWVzc2FnZX1gIH0pOyB9Cn0pOwoKYXBwLmdldCgnL2FwaS9yZXN1bWUvOnNoZWV0JywgKHJlcSwgcmVzKSA9PiB7CiAgdHJ5IHsKICAgIGNvbnN0IGRhdGEgPSByZWFkV29ya2Jvb2soKVtjYW1lbChyZXEucGFyYW1zLnNoZWV0KV07CiAgICBpZiAoIWRhdGEpIHJldHVybiByZXMuc3RhdHVzKDQwNCkuanNvbih7IGVycm9yOiBgTm8gc2hlZXQgbmFtZWQgIiR7cmVxLnBhcmFtcy5zaGVldH0iYCB9KTsKICAgIHJlcy5qc29uKGRhdGEpOwogIH0gY2F0Y2ggKGUpIHsgcmVzLnN0YXR1cyg1MDApLmpzb24oeyBlcnJvcjogZS5tZXNzYWdlIH0pOyB9Cn0pOwoKYXBwLmxpc3RlbihQT1JULCAoKSA9PiBjb25zb2xlLmxvZyhgUmVzdW1lIEFQSSBvbiBodHRwOi8vbG9jYWxob3N0OiR7UE9SVH0gIChyZWFkaW5nICR7RklMRX0pYCkpOwo=
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const XLSX = require('xlsx');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const FILE = process.env.RESUME_XLSX || path.join(__dirname, 'data', 'resume.xlsx');
+
+// "Team Size" -> "teamSize"
+const camel = (s) =>
+  String(s).trim().replace(/[^a-zA-Z0-9]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''))
+    .replace(/^./, (c) => c.toLowerCase());
+
+// Re-reads the file on every request, so saved Excel edits show up on refresh.
+function readWorkbook() {
+  const wb = XLSX.readFile(FILE);
+  const out = {};
+  for (const name of wb.SheetNames) {
+    if (name.startsWith('_')) continue; // private tabs
+    const rows = XLSX.utils.sheet_to_json(wb.Sheets[name], { defval: '', raw: false });
+    out[camel(name)] = rows.map((row) =>
+      Object.fromEntries(Object.entries(row).map(([k, v]) => [camel(k), typeof v === 'string' ? v.trim() : v]))
+    );
+  }
+  return out;
+}
+
+app.use(cors());
+app.use((req, res, next) => { res.set('Cache-Control', 'no-store'); next(); });
+
+app.get('/api/resume', (req, res) => {
+  try { res.json(readWorkbook()); }
+  catch (e) { res.status(500).json({ error: `Could not read ${FILE}: ${e.message}` }); }
+});
+
+app.get('/api/resume/:sheet', (req, res) => {
+  try {
+    const data = readWorkbook()[camel(req.params.sheet)];
+    if (!data) return res.status(404).json({ error: `No sheet named "${req.params.sheet}"` });
+    res.json(data);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.listen(PORT, () => console.log(`Resume API on http://localhost:${PORT}  (reading ${FILE})`));
